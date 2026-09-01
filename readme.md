@@ -4,25 +4,38 @@ No Man's Sky Audio Infuser helps you rebuild the Mac version of
 `NMSARC.Audio.pak` with replacement `.wem` audio files from a mod source folder
 or source zip.
 
-The usual workflow is:
+## Why was this built?
+I have a hearing impairment such that I can't understand a darned thing the original
+exosuit voice says. Nothing. It's just painful noise that reminds me that there's a
+whole world out there that I am too crippled to enjoy. But other people have created
+voices that I ***can*** understand. My favorite is [MEGAN Exosuit AI Voice](https://www.nexusmods.com/nomanssky/mods/1992) from
+wonderful voice of actress Dacey Else. It took hours to figure out how to incorporate
+audio hacks into a Macintosh version of No Man's Sky, and I'd like to offer something
+back to the community so other Macintosh players can enjoy customizing their audio, too.
+
+## The usual workflow is:
 
 1. Download a No Man's Sky audio mod from Nexus Mods as a zip file or extracted
-   folder. My favorite is [MEGAN Exosuit AI Voice](https://www.nexusmods.com/nomanssky/mods/1992).
+   folder.
 2. Run `nms_audio_infuser.py` on a Macintosh with No Man's Sky installed through
    Steam.
 3. The script copies the game's original `NMSARC.Audio.pak`, extracts it,
    overwrites matching `.wem` files with the modded audio, and rebuilds a new
    HGPAK archive.
+4. You are provided a cp command to copy the file back over to the NMS directory. But let me know if you'd rather it do this for you.
 
-The script does not overwrite the game install automatically. At the end, it
-prints a `cp` command you can review and run manually.
+> ***The script does not overwrite the game install automatically. At the end, it prints a `cp` command you can review and run manually.***
 
 ## Requirements
 
 - macOS
 - No Man's Sky installed through Steam
 - Python 3.10 or newer
-- No third-party Python packages
+- About 9 gigs of free space
+  - 2.7 to copy the the bank over from the NMS app (this serves as a back-up)
+  - 2.7 to decompress it to a directory
+  - 2.7 to recompress the changes as a new file that may be copied over the old one
+- No third-party Python packages necessary
 
 The default Steam audio archive location is:
 
