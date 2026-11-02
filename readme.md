@@ -1,5 +1,16 @@
 # No Man's Sky Audio Infuser
 
+## End User License Agreement (EULA)
+
+This software is provided “AS IS,” without warranties of any kind, to the
+fullest extent permitted by applicable law. You assume all risk from
+downloading, installing, or using it, including damage to your computer or
+game and loss or corruption of game data or save files. To the fullest extent
+permitted by applicable law, the author is not liable for damages arising from
+use of this software; nothing in this EULA excludes liability or rights that
+cannot legally be excluded.
+
+## The Good Stuff...
 Version 1.1.0 — 2026-11-02
 
 No Man's Sky Audio Infuser helps you rebuild the Mac version of
@@ -18,6 +29,38 @@ The usual workflow is:
 
 The script does not overwrite the game install automatically. At the end, it
 prints a `cp` command you can review and run manually.
+
+## Example Run:
+Assuming you have a folder called "No Man's Sky Hacks" at the root of your home folder.
+
+```bash
+cd "/Users/yourfolder/No Man's Sky Hacks/Audio Infuser/src/nms_audio_infuser"
+python nms_audio_infuser.py NMS-MeganExosuitAudio.zip
+```
+```txt
+python nms_audio_infuser.py ../../NMS-MeganExosuitAudio.zip 
+Extracting source zip into Audio_Source_202611021637
+Copying original archive to: /Users/yourfolder/No Man's Sky Hacks/NMSARC.Audio.202611021637.pak
+Extracting copied archive to: /Users/yourfolder/No Man's Sky Hacks/Audio_Bank_202611021637
+Running: '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio Infuser/.venv/bin/python' '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio Infuser/src/nms_audio_infuser/extract_hgpak.py' --overwrite --quiet -o '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio_Bank_202611021637' '/Users/yourfolder/No Man'"'"'s Sky Hacks/NMSARC.Audio.202611021637.pak'
+warning: Inferred final payload for 'audio/mac/media/1001765535.wem' from previous entry and EOF
+Done: extracted 28635 file(s), skipped 0, output: /Users/yourfolder/No Man's Sky Hacks/Audio_Bank_202611021637
+overwrote: audio/mac/media/english(us)/1003218333.wem
+overwrote: audio/mac/media/english(us)/1006934470.wem
+:
+:
+Matched replacement writes: 181
+Rebuilding HGPAK archive: /Users/yourfolder/No Man's Sky Hacks/NMSARC.Audio.infused.202611021637.pak
+Running: '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio Infuser/.venv/bin/python' '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio Infuser/src/nms_audio_infuser/compact_hgpak.py' '/Users/yourfolder/No Man'"'"'s Sky Hacks/Audio_Bank_202611021637' -o '/Users/yourfolder/No Man'"'"'s Sky Hacks/NMSARC.Audio.infused.202611021637.pak' --overwrite
+Done: packed 28635 file(s) into /Users/yourfolder/No Man's Sky Hacks/NMSARC.Audio.infused.202611021637.pak
+
+Original NMSARC.Audio.pak location: /Users/yourfolder/Library/Application Support/Steam/steamapps/common/No Man's Sky/No Man's Sky.app/Contents/Resources/GAMEDATA/MACOSBANKS/NMSARC.Audio.pak
+Manual install command:
+cp '/Users/yourfolder/No Man'"'"'s Sky Hacks/NMSARC.Audio.infused.202611021637.pak' '/Users/yourfolder/Library/Application Support/Steam/steamapps/common/No Man'"'"'s Sky/No Man'"'"'s Sky.app/Contents/Resources/GAMEDATA/MACOSBANKS/NMSARC.Audio.pak'
+```
+```bash
+cp "/Users/yourfolder/No Man's Sky Hacks/NMSARC.Audio.infused.202611021637.pak" "/Users/yourfolder/Library/Application Support/Steam/steamapps/common/No Man's Sky/No Man's Sky.app/Contents/Resources/GAMEDATA/MACOSBANKS/NMSARC.Audio.pak"
+```
 
 ## Requirements
 
