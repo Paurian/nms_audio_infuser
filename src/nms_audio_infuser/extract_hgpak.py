@@ -29,6 +29,8 @@ from pathlib import Path, PurePosixPath
 from typing import BinaryIO, Iterable
 
 
+APP_VERSION = "1.1.0"
+RELEASE_DATE = "2026-11-02"
 TABLE_OFFSET = 0x20
 ROW_SIZE = 32
 ALIGNMENT = 16
@@ -213,6 +215,7 @@ def default_output_dir(archive: Path) -> Path:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Extract files from a Hello Games HGPAK archive.")
+    parser.add_argument("-?", action="help", help="Show this help message and exit")
     parser.add_argument("archive", type=Path, help="Path to an .pak/.HGPAK archive")
     parser.add_argument(
         "-o",
@@ -228,8 +231,14 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    arguments = sys.argv[1:] if argv is None else argv
+    if not arguments:
+        print(f"{Path(__file__).name}: [version {APP_VERSION}, {RELEASE_DATE}]")
+        print("Extracts or lists files in a No Man's Sky HGPAK archive.")
+        return 0
+
     parser = build_arg_parser()
-    args = parser.parse_args(argv)
+    args = parser.parse_args(arguments)
 
     archive = args.archive.expanduser().resolve()
     if not archive.is_file():

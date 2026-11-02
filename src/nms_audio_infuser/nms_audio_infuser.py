@@ -16,6 +16,8 @@ from datetime import datetime
 from pathlib import Path, PurePosixPath
 
 
+APP_VERSION = "1.1.0"
+RELEASE_DATE = "2026-11-02"
 DEFAULT_HACKS_DIR = Path.home() / "Projects" / "No Man's Sky Hacks"
 ARCHIVE_RELATIVE_PATH = (
     "Library/Application Support/Steam/steamapps/common/No Man's Sky/"
@@ -73,6 +75,18 @@ def require_file(path: Path, label: str) -> None:
 def require_tools(extract_script: Path, compact_script: Path) -> None:
     require_file(extract_script, "extract_hgpak.py")
     require_file(compact_script, "compact_hgpak.py")
+
+
+def resolve_tool_dir(hacks_dir: Path) -> Path:
+    project_tool_dir = hacks_dir / "Audio Infuser"
+    if (project_tool_dir / "extract_hgpak.py").is_file() and (project_tool_dir / "compact_hgpak.py").is_file():
+        return project_tool_dir
+
+    installed_tool_dir = Path(__file__).resolve().parent
+    if (installed_tool_dir / "extract_hgpak.py").is_file() and (installed_tool_dir / "compact_hgpak.py").is_file():
+        return installed_tool_dir
+
+    return project_tool_dir
 
 
 def run_tool(command: list[str]) -> None:
@@ -174,7 +188,13 @@ def print_manual_copy_command(original: Path, rebuilt: Path) -> None:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Replace matching WEM files and rebuild NMSARC.Audio.pak.")
+    parser.add_argument("-?", action="help", help="Show this help message and exit")
     parser.add_argument("audio_source", nargs="?", help="Replacement audio source directory or .zip file")
+    parser.add_argument(
+        "--interactive",
+        action="store_true",
+        help="Prompt for an audio source instead of showing the no-argument summary",
+    )
     parser.add_argument(
         "--hacks-dir",
         help="Root folder for backups, temporary audio banks, and tool scripts. Defaults to '~/Projects/No Man's Sky Hacks'.",
@@ -183,12 +203,20 @@ def build_arg_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    arguments = sys.argv[1:] if argv is None else argv
+    if not arguments:
+        print(f"{Path(__file__).name}: [version {APP_VERSION}, {RELEASE_DATE}]")
+        print("Rebuilds NMSARC.Audio.pak with replacement WEM audio files from a folder or zip.")
+        return 0
+
     parser = build_arg_parser()
-    args = parser.parse_args(argv)
+    args = parser.parse_args(arguments)
+    if args.audio_source is None and not args.interactive:
+        parser.error("provide an audio_source or use --interactive to be prompted")
 
     stamp = timestamp()
     hacks_dir = resolve_hacks_dir(args.hacks_dir)
-    tool_dir = hacks_dir / "Audio Infuser"
+    tool_dir = resolve_tool_dir(hacks_dir)
     extract_script = tool_dir / "extract_hgpak.py"
     compact_script = tool_dir / "compact_hgpak.py"
     original = original_archive_path()

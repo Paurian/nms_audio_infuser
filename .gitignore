@@ -11,7 +11,6 @@ ENV/
 
 # Packaging / build output
 build/
-dist/
 *.egg-info/
 .eggs/
 *.egg
@@ -39,3 +38,4 @@ htmlcov/
 # Downloaded mod/source archives
 *.zip
 *.pak
+!/test/test.pak

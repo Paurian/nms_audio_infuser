@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nms-audio-infuser"
+dynamic = ["version"]
+description = "Extract, rebuild, and modify No Man's Sky audio HGPAK archives."
+readme = "readme.md"
+requires-python = ">=3.10"
+dependencies = []
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Games/Entertainment",
+]
+
+[project.scripts]
+nms-audio-infuser = "nms_audio_infuser.nms_audio_infuser:main"
+extract-hgpak = "nms_audio_infuser.extract_hgpak:main"
+compact-hgpak = "nms_audio_infuser.compact_hgpak:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["nms_audio_infuser"]
+
+[tool.setuptools.dynamic]
+version = { attr = "nms_audio_infuser.nms_audio_infuser.APP_VERSION" }

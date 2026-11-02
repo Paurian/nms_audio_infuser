@@ -1,5 +1,7 @@
 # No Man's Sky Audio Infuser
 
+Version 1.1.0 — 2026-11-02
+
 No Man's Sky Audio Infuser helps you rebuild the Mac version of
 `NMSARC.Audio.pak` with replacement `.wem` audio files from a mod source folder
 or source zip.
@@ -8,8 +10,8 @@ The usual workflow is:
 
 1. Download a No Man's Sky audio mod from Nexus Mods as a zip file or extracted
    folder. My favorite is [MEGAN Exosuit AI Voice](https://www.nexusmods.com/nomanssky/mods/1992).
-2. Run `nms_audio_infuser.py` on a Macintosh with No Man's Sky installed through
-   Steam.
+2. Run the Audio Infuser command on a Macintosh with No Man's Sky installed
+   through Steam.
 3. The script copies the game's original `NMSARC.Audio.pak`, extracts it,
    overwrites matching `.wem` files with the modded audio, and rebuilds a new
    HGPAK archive.
@@ -30,24 +32,59 @@ The default Steam audio archive location is:
 ~/Library/Application Support/Steam/steamapps/common/No Man's Sky/No Man's Sky.app/Contents/Resources/GAMEDATA/MACOSBANKS/NMSARC.Audio.pak
 ```
 
-## Quick Start
+## Project Layout
 
-From this directory:
+The Python source files are in `src/nms_audio_infuser/`:
+
+- `nms_audio_infuser.py` — main audio infuser
+- `extract_hgpak.py` — HGPAK extractor
+- `compact_hgpak.py` — HGPAK packer
+
+## Install from Wheel
+
+From the project root, install the built wheel with:
 
 ```bash
-python3 nms_audio_infuser.py "NMS-MeganExosuitAudio.zip"
+python3 -m pip install dist/nms_audio_infuser-1.1.0-py3-none-any.whl
 ```
+
+If the wheel has not been built yet, create it with:
+
+```bash
+python3 -m build --wheel --outdir dist
+```
+
+After installation, run the main program using its command:
+
+```bash
+nms-audio-infuser "NMS-MeganExosuitAudio.zip"
+```
+
+For an interactive source prompt, run `nms-audio-infuser --interactive`. The
+helper commands are `extract-hgpak` and `compact-hgpak`.
+
+## Quick Start from Source
+
+From the project root, without installing the wheel:
+
+```bash
+PYTHONPATH=src python3 -m nms_audio_infuser.nms_audio_infuser "NMS-MeganExosuitAudio.zip"
+```
+
+To start the infuser without naming a source, run it with `--interactive` to be
+prompted. Running a script with no arguments prints its version and a short
+description. Use `-h`, `--help`, or `-?` to display its command-line options.
 
 With an extracted source folder:
 
 ```bash
-python3 nms_audio_infuser.py "NMS-Megan-Audio"
+PYTHONPATH=src python3 -m nms_audio_infuser.nms_audio_infuser "NMS-Megan-Audio"
 ```
 
 With an explicit project directory:
 
 ```bash
-python3 nms_audio_infuser.py \
+PYTHONPATH=src python3 -m nms_audio_infuser.nms_audio_infuser \
   --hacks-dir "$HOME/Projects/No Man's Sky Hacks" \
   "NMS-MeganExosuitAudio.zip"
 ```
@@ -55,7 +92,7 @@ python3 nms_audio_infuser.py \
 ## Main Script
 
 ```bash
-python3 nms_audio_infuser.py [--hacks-dir HACKS_DIR] [audio_source]
+PYTHONPATH=src python3 -m nms_audio_infuser.nms_audio_infuser [--hacks-dir HACKS_DIR] [--interactive] [audio_source]
 ```
 
 ### Arguments
@@ -65,7 +102,8 @@ python3 nms_audio_infuser.py [--hacks-dir HACKS_DIR] [audio_source]
 - Optional.
 - A directory or `.zip` file containing replacement No Man's Sky audio files.
 - The script searches recursively for `.wem` files inside this source.
-- If omitted, the script prompts for the relative path of the audio source.
+- If omitted, the script prompts for the relative path of the audio source when
+  `--interactive` is supplied.
 - Relative paths are checked from this tool directory first, then from the
   current terminal directory.
 
@@ -155,7 +193,7 @@ Review that command before running it.
 Extracts files from an HGPAK archive.
 
 ```bash
-python3 extract_hgpak.py [options] archive
+PYTHONPATH=src python3 -m nms_audio_infuser.extract_hgpak [options] archive
 ```
 
 Arguments:
@@ -199,7 +237,7 @@ Options:
 Packs a folder into an HGPAK archive.
 
 ```bash
-python3 compact_hgpak.py [options] input_dir
+PYTHONPATH=src python3 -m nms_audio_infuser.compact_hgpak [options] input_dir
 ```
 
 Arguments:
@@ -229,6 +267,15 @@ Options:
 - Overwrites an existing output archive.
 - If omitted and the output archive already exists, packing stops with an
   error.
+
+## Build Distribution
+
+Install the `build` frontend, then build both a wheel and a source distribution
+into `dist/` from the project root:
+
+```bash
+python3 -m build --sdist --wheel --outdir dist
+```
 
 ## Notes
 
